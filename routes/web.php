@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ItemController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,6 +28,16 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
+
+
 Route::get('/about',function(){
     return view('about');
 });
+
+Route::prefix('admin/item')
+        ->namespace('Admin')
+        ->group(function(){
+            Route::get('/', [ItemController::class, 'index'])->name('admin.item.index');
+            Route::get('/create', [ItemController::class, 'create'])->name('admin.item.create');
+            Route::post('/add',[ItemController::class,'add'])->name('admin.item.add');    
+        }); 
